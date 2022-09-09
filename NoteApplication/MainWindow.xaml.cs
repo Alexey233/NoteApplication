@@ -29,20 +29,30 @@ namespace NoteApplication
             AllNotesLabel.Text = "Все прошлые заметки";
         }
 
+        private class Item
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+        }
+
 
         public MainWindow()
         {
 
             InitializeComponent();
-
+            
             using (ApplicationContext db = new ApplicationContext())
             {
+                //исправить на правильное заполнение, так как тратит много
                 var allNotes = db.Note.ToList();
-                DataFromBase.ItemsSource = allNotes;
+                foreach(var i in allNotes)
+                {
+                    DataFromBase.Items.Add(new Item {Id = i.Id, Title = i.Title});
+                }
             }
+           
 
-
-        }
+    }
 
         private async void SaveNoteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -55,8 +65,12 @@ namespace NoteApplication
                     db.Note.Add(note);
                     db.SaveChanges();
 
-                    var AllNotes = db.Note.ToList();
-                    DataFromBase.ItemsSource = AllNotes;
+                    //исправить на правильное заполнение, так как тратит много
+                    var allNotes = db.Note.ToList();
+                    foreach (var i in allNotes)
+                    {
+                        DataFromBase.Items.Add(new Item { Id = i.Id, Title = i.Title });
+                    }
                 }
                 else
                 {
@@ -74,6 +88,50 @@ namespace NoteApplication
         {
             TitleTextBox.Text = "";
             TextTextBox.Text = "";
+        }
+
+        private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            AcceptWindow acceptWindow = new AcceptWindow();
+
+            if (acceptWindow.ShowDialog() == true)
+            {
+                await using (ApplicationContext db = new ApplicationContext())
+                {
+                    var infoAboutSelectedCell = (Item)DataFromBase.SelectedItem;
+
+                    var forRemove = db.Note.FirstOrDefault(p => p.Id == infoAboutSelectedCell.Id);
+                    if (forRemove != null)
+                    {
+                        db.Remove(forRemove);
+                        db.SaveChanges();
+                    }
+
+
+                    //исправить на правильное заполнение, так как тратит много
+                    var allNotes = db.Note.ToList();
+                    foreach (var i in allNotes)
+                    {
+                        DataFromBase.Items.Add(new Item { Id = i.Id, Title = i.Title });
+                    }
+                }
+            }
+        }
+
+        private async void DataFromBase_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            await using (ApplicationContext db = new ApplicationContext())
+            {
+                var infoAboutSelectedCell = (Item)DataFromBase.SelectedItem;
+
+                var showNote = db.Note.FirstOrDefault(p => p.Id == infoAboutSelectedCell.Id);
+                if (showNote != null)
+                {
+                    TitleTextBox.Text = showNote.Title;
+                    TextTextBox.Text = showNote.Text;
+                }
+               
+            }
         }
     }
 }

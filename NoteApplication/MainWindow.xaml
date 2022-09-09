@@ -1,4 +1,4 @@
-﻿<Window x:Class="NoteApplication.MainWindow"
+﻿<Window Style="{DynamicResource WindowStyle1}" x:Class="NoteApplication.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,6 +25,8 @@
         <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
         <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
         <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        
+        
         <Style x:Key="RoundedButton" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -61,7 +63,10 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
         </Style>
+
+
         <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -86,9 +91,7 @@
             </Setter>
         </Style>
 
-
-
-
+        
 
     </Window.Resources>
 
@@ -98,27 +101,27 @@
 
         <Button x:Name="NewNoteButton" Style="{DynamicResource RoundedButton}" Content="Новая заметка" HorizontalAlignment="Left" Height="51" Margin="105,343,0,0" VerticalAlignment="Top" Width="134"
                Background="#7a6060" 
-               FontFamily="Arial"
-               FontSize="17" Foreground="Wheat" Click="NewNoteButton_Click" 
+               FontFamily="Times New Roman"
+               FontSize="20" Foreground="Wheat" Click="NewNoteButton_Click" 
                 
                 />
         <Button x:Name="SaveNoteButton" Style="{DynamicResource RoundedButton}" Content="Сохранить" HorizontalAlignment="Left" Height="51" Margin="293,343,0,0" VerticalAlignment="Top" Width="134"
             Background="#7a6060" 
-            FontFamily="Arial"
-            FontSize="17" Foreground="Wheat" Click="SaveNoteButton_Click" 
+            FontFamily="Times New Roman"
+            FontSize="20" Foreground="Wheat" Click="SaveNoteButton_Click" 
                 
                 />
 
-        <Button x:Name="PropertiesTextButton" Style="{DynamicResource RoundedButton}"  Content="Настройка &#xa; текста" HorizontalAlignment="Left" Height="57" Margin="5,154,0,0" VerticalAlignment="Top" Width="95"
+        <Button x:Name="PropertiesTextButton" Style="{DynamicResource RoundedButton}"  Content="Настройка &#xa; текста" HorizontalAlignment="Left" Height="56" Margin="10,154,0,0" VerticalAlignment="Top" Width="90"
             Background="#7a6060" 
-            FontFamily="Arial"
-            FontSize="15" Foreground="Wheat"
+            FontFamily="Times New Roman"
+            FontSize="18" Foreground="Wheat" RenderTransformOrigin="0.733,0.527"
             
             />
-        <Button x:Name="DeleteTextFromNoteButton" Style="{DynamicResource RoundedButton}"  Content="Удалить &#xA; текст" HorizontalAlignment="Left" Height="57" Margin="-2,281,0,0" VerticalAlignment="Top" Width="100"
+        <Button x:Name="DeleteTextFromNoteButton" Style="{DynamicResource RoundedButton}"  Content="Удалить &#xA; текст" HorizontalAlignment="Left" Height="57" Margin="10,281,0,0" VerticalAlignment="Top" Width="90"
             Background="#7a6060" 
-            FontFamily="Arial"
-            FontSize="15" Foreground="Wheat" Click="DeleteTextFromNoteButton_Click"
+            FontFamily="Times New Roman"
+            FontSize="16" Foreground="Wheat" Click="DeleteTextFromNoteButton_Click"
             
             />
         <TextBox x:Name="TextTextBox" 
@@ -142,32 +145,49 @@
             />
 
         <DataGrid x:Name="DataFromBase" 
+            AutoGenerateColumns="False"
             Background="#383443" 
             HorizontalAlignment="Left"
             Height="283"
-            Margin="446,69,0,0" 
+            FontSize="25"
+            Margin="446,63,0,0" 
             VerticalAlignment="Top" 
             Width="316" 
-            d:ItemsSource="{d:SampleData ItemCount=5}" BorderBrush="#FF383443" Foreground="Wheat"
+            d:ItemsSource="{d:SampleData ItemCount=5}" 
+            BorderBrush="#FF383443" 
+            Foreground="Wheat"
             RowBackground="#FF383443" 
-                  
-                  
-                  >
+            FontFamily="Times New Roman" 
+            SelectionMode="Single" 
+            MouseDoubleClick="DataFromBase_MouseDoubleClick" 
+            
+           
+            >
 
+           
+            <DataGrid.Resources>
+                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="Background" Value="#7a6060" />
+                </Style>
+            </DataGrid.Resources>
+            
             <DataGrid.Columns>
                 <DataGridTextColumn
-                Header="Title"
-                MinWidth="120"
+                Header="#"
+                Visibility="Hidden"
+                Binding="{Binding Id}" />
                 
+                <DataGridTextColumn
+                Header="Название"
+                MinWidth="280"
+                MaxWidth="280"
                 Binding="{Binding Title}" />
             </DataGrid.Columns>
-
-
         </DataGrid>
 
         <Button x:Name="DownloadSelectNoteButton" Style="{DynamicResource RoundedButton}" Content="Скачать заметки" HorizontalAlignment="Left" Height="52" Margin="589,358,0,0" VerticalAlignment="Top" Width="173"
             Background="#7a6060" 
-            FontFamily="Arial"
+            FontFamily="Times New Roman"
             FontSize="20" Foreground="Wheat" 
                 
                 >
@@ -183,7 +203,7 @@
             VerticalAlignment="Top" 
             TextAlignment="Center"
             Width="102"
-            FontSize="20"
+            FontSize="22" FontFamily="Times New Roman"
             />
         <TextBlock 
             Foreground="Wheat"
@@ -195,7 +215,7 @@
             VerticalAlignment="Top" 
             TextAlignment="Center"
             Width="102"
-            FontSize="20" RenderTransformOrigin="0.529,0.052"
+            FontSize="22" RenderTransformOrigin="0.529,0.052" FontFamily="Times New Roman"
             />
         <TextBlock x:Name="AllNotesLabel" 
             Foreground="Wheat"
@@ -207,8 +227,14 @@
             VerticalAlignment="Top" 
             TextAlignment="Center"
             Width="316"
-            FontSize="25"
+            FontSize="30" FontFamily="Times New Roman"
             />
+        <Button x:Name="DeleteNoteButton" Style="{DynamicResource RoundedButton}" Content="Удалить &#xa; заметку" HorizontalAlignment="Left" Height="52" Margin="446,358,0,0" VerticalAlignment="Top" Width="85"
+            Background="#7a6060" 
+            FontFamily="Times New Roman"
+            FontSize="17" Foreground="Wheat" Click="DeleteNoteButton_Click" 
+                
+                />
 
 
 
