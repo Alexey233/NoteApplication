@@ -22,6 +22,7 @@ namespace NoteApplication
         public AcceptWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
 
 

@@ -1,7 +1,9 @@
-﻿using NoteApplication.Model;
+﻿using Microsoft.Win32;
+using NoteApplication.Model;
 using NoteApplication.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,13 +42,14 @@ namespace NoteApplication
         {
 
             InitializeComponent();
-            
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             using (ApplicationContext db = new ApplicationContext())
             {
                 //исправить на правильное заполнение, так как тратит много
                 var allNotes = db.Note.ToList();
                 foreach(var i in allNotes)
                 {
+                    
                     DataFromBase.Items.Add(new Item {Id = i.Id, Title = i.Title});
                 }
             }
@@ -65,6 +68,8 @@ namespace NoteApplication
                     db.Note.Add(note);
                     db.SaveChanges();
 
+
+                    DataFromBase.Items.Clear();
                     //исправить на правильное заполнение, так как тратит много
                     var allNotes = db.Note.ToList();
                     foreach (var i in allNotes)
@@ -81,13 +86,23 @@ namespace NoteApplication
 
         private void DeleteTextFromNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            TextTextBox.Text = "";
+            AcceptWindow acceptWindow = new AcceptWindow();
+
+            if (acceptWindow.ShowDialog() == true)
+            {
+                TextTextBox.Text = "";
+            }
         }
 
         private void NewNoteButton_Click(object sender, RoutedEventArgs e)
         {
-            TitleTextBox.Text = "";
-            TextTextBox.Text = "";
+            AcceptWindow acceptWindow = new AcceptWindow();
+
+            if (acceptWindow.ShowDialog() == true)
+            {
+                TitleTextBox.Text = "";
+                TextTextBox.Text = "";
+            }
         }
 
         private async void DeleteNoteButton_Click(object sender, RoutedEventArgs e)
@@ -107,7 +122,7 @@ namespace NoteApplication
                         db.SaveChanges();
                     }
 
-
+                    DataFromBase.Items.Clear();
                     //исправить на правильное заполнение, так как тратит много
                     var allNotes = db.Note.ToList();
                     foreach (var i in allNotes)
@@ -131,6 +146,22 @@ namespace NoteApplication
                     TextTextBox.Text = showNote.Text;
                 }
                
+            }
+        }
+
+        private async void DownloadSelectNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            await using (ApplicationContext db = new ApplicationContext())
+            {
+                var infoAboutSelectedCell = (Item)DataFromBase.SelectedItem;
+                
+                var showNote = db.Note.FirstOrDefault(p => p.Id == infoAboutSelectedCell.Id);
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.ShowDialog();
+                string filename = saveFileDialog.FileName;
+                System.IO.File.WriteAllText(filename, "Название: " +  showNote.Title + "\n" + "Текст: " + showNote.Text);
+                
             }
         }
     }
