@@ -45,12 +45,12 @@
                                 <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#305376"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#305376"/>
+                                <Setter Property="Background" TargetName="border" Value="#7a6060"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#383443"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Pressed.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Pressed.Border}"/>
+                                <Setter Property="Background" TargetName="border" Value="#383443"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#383443"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
@@ -62,6 +62,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="{ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle, TypeInTargetAssembly={x:Type DataGrid}}" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="Border" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" SnapsToDevicePixels="True"/>
+                            <Polygon x:Name="Arrow" Fill="Black" HorizontalAlignment="Right" Margin="8,8,3,3" Opacity="0.15" Points="0,10 10,10 10,0" Stretch="Uniform" VerticalAlignment="Bottom"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Stroke" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Visibility" TargetName="Arrow" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+
+
 
     </Window.Resources>
 
@@ -69,91 +96,123 @@
     <Grid Background="#2f2d39" Height="450" Width="800">
 
 
-        <Button Style="{DynamicResource RoundedButton}" Content="Новая заметка" HorizontalAlignment="Left" Height="54" Margin="101,356,0,0" VerticalAlignment="Top" Width="140"
-               Background="#ef6060" 
+        <Button x:Name="NewNoteButton" Style="{DynamicResource RoundedButton}" Content="Новая заметка" HorizontalAlignment="Left" Height="51" Margin="105,343,0,0" VerticalAlignment="Top" Width="134"
+               Background="#7a6060" 
                FontFamily="Arial"
-               FontSize="20" RenderTransformOrigin="0.5,0.5"
+               FontSize="17" Foreground="Wheat" Click="NewNoteButton_Click" 
                 
-                >
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="-15.578"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="-7.388"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Button Style="{DynamicResource RoundedButton}" Content="Сохранить" HorizontalAlignment="Left" Height="52" Margin="259,356,0,0" VerticalAlignment="Top" Width="156"
-            Background="#ef6060" 
+                />
+        <Button x:Name="SaveNoteButton" Style="{DynamicResource RoundedButton}" Content="Сохранить" HorizontalAlignment="Left" Height="51" Margin="293,343,0,0" VerticalAlignment="Top" Width="134"
+            Background="#7a6060" 
             FontFamily="Arial"
-            FontSize="20" RenderTransformOrigin="0.5,0.5"
+            FontSize="17" Foreground="Wheat" Click="SaveNoteButton_Click" 
                 
-                >
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="-15.578"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="-7.388"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
+                />
 
-        <Button Style="{DynamicResource RoundedButton}"  Content="Настройка &#xa; текста" HorizontalAlignment="Left" Height="53" Margin="10,164,0,0" VerticalAlignment="Top" Width="78"
-            Background="#ef6060" 
+        <Button x:Name="PropertiesTextButton" Style="{DynamicResource RoundedButton}"  Content="Настройка &#xa; текста" HorizontalAlignment="Left" Height="57" Margin="5,154,0,0" VerticalAlignment="Top" Width="95"
+            Background="#7a6060" 
             FontFamily="Arial"
-            FontSize="15"
+            FontSize="15" Foreground="Wheat"
             
             />
-        <Button Style="{DynamicResource RoundedButton}"  Content="Удалить &#xA; текст" HorizontalAlignment="Left" Height="53" Margin="10,269,0,0" VerticalAlignment="Top" Width="78"
-            Background="#ef6060" 
+        <Button x:Name="DeleteTextFromNoteButton" Style="{DynamicResource RoundedButton}"  Content="Удалить &#xA; текст" HorizontalAlignment="Left" Height="57" Margin="-2,281,0,0" VerticalAlignment="Top" Width="100"
+            Background="#7a6060" 
             FontFamily="Arial"
-            FontSize="15"
+            FontSize="15" Foreground="Wheat" Click="DeleteTextFromNoteButton_Click"
             
             />
-        <TextBox 
+        <TextBox x:Name="TextTextBox" 
             TextWrapping="Wrap" 
-            Margin="93,98,385,98"
+            Margin="105,84,373,112"
             Background="#383443" 
-              
+            Foreground="Wheat"
             Tag="Введите текст заметки"
             FontSize="20"   
             TextAlignment="Justify"
             />
 
-        <TextBox
+        <TextBox x:Name="TitleTextBox"
+            Foreground="Wheat"
             TextWrapping="Wrap" 
-            Margin="93,26,385,368"
+            Margin="105,20,373,386"
             Background="#383443" 
             Tag="Введите название заметки"
             FontSize="20"   
             TextAlignment="Justify"     
             />
 
-        <DataGrid 
+        <DataGrid x:Name="DataFromBase" 
             Background="#383443" 
             HorizontalAlignment="Left"
             Height="283"
             Margin="446,69,0,0" 
             VerticalAlignment="Top" 
             Width="316" 
-            d:ItemsSource="{d:SampleData ItemCount=5}"/>
-        <Button Style="{DynamicResource RoundedButton}" Content="Скачать заметки" HorizontalAlignment="Left" Height="52" Margin="608,356,0,0" VerticalAlignment="Top" Width="156"
-            Background="#ef6060" 
+            d:ItemsSource="{d:SampleData ItemCount=5}" BorderBrush="#FF383443" Foreground="Wheat"
+            RowBackground="#FF383443" 
+                  
+                  
+                  >
+
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                Header="Title"
+                MinWidth="120"
+                
+                Binding="{Binding Title}" />
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+        <Button x:Name="DownloadSelectNoteButton" Style="{DynamicResource RoundedButton}" Content="Скачать заметки" HorizontalAlignment="Left" Height="52" Margin="589,358,0,0" VerticalAlignment="Top" Width="173"
+            Background="#7a6060" 
             FontFamily="Arial"
-            FontSize="20" RenderTransformOrigin="0.5,0.5"
+            FontSize="20" Foreground="Wheat" 
                 
                 >
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleX="-15.578"/>
-                    <RotateTransform/>
-                    <TranslateTransform X="-7.388"/>
-                </TransformGroup>
-            </Button.RenderTransform>
+
         </Button>
+        <TextBlock 
+            Foreground="Wheat"
+            HorizontalAlignment="Left" 
+            Height="58" 
+            Margin="-2,10,0,0" 
+            TextWrapping="Wrap" 
+            Text="Название заметки" 
+            VerticalAlignment="Top" 
+            TextAlignment="Center"
+            Width="102"
+            FontSize="20"
+            />
+        <TextBlock 
+            Foreground="Wheat"
+            HorizontalAlignment="Left" 
+            Height="58" 
+            Margin="-2,84,0,0" 
+            TextWrapping="Wrap" 
+            Text="Текст заметки" 
+            VerticalAlignment="Top" 
+            TextAlignment="Center"
+            Width="102"
+            FontSize="20" RenderTransformOrigin="0.529,0.052"
+            />
+        <TextBlock x:Name="AllNotesLabel" 
+            Foreground="Wheat"
+            HorizontalAlignment="Left" 
+            Height="38" 
+            Margin="446,20,0,0" 
+            TextWrapping="Wrap" 
+            Text="Все прошлые заметки" 
+            VerticalAlignment="Top" 
+            TextAlignment="Center"
+            Width="316"
+            FontSize="25"
+            />
+
+
+
+
     </Grid>
 
 
