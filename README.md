@@ -1,3 +1,3 @@
 # NoteApplication
 
-Простое приложение на wpf с подключением postgresql
+Simple application. Technologies: c#, wpf.
