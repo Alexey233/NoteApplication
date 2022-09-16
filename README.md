@@ -1,3 +1,3 @@
 # NoteApplication
 
-Note application, work in progress
+Простое приложение на wpf с подключением postgresql
